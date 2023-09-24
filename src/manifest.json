@@ -1,0 +1,31 @@
+{
+    "metadata": {
+        "authors": ["PavelDobCZ23"],
+        "license": "GNU GPL v3 + The Commons Clause",
+        "url": "https://www.icecraftstudio.repl.co"
+    },
+    "format_version": 2,
+    "header": {
+        "description": "Protects you to safely join the world or respawn! §9Made by PavelDobCZ23",
+        "name": "Protected Spawn [BP]",
+        "uuid": "7a695535-e407-4fbf-96fe-f1a08f90262b",
+        "version": [ 1, 0, 0 ],
+        "min_engine_version": [ 1, 20, 30 ]
+    },
+    "modules": [
+        {
+            "description": "Protected Spawn [BP] - script module",
+            "type": "script",
+            "language": "javascript",
+            "uuid": "1f7bdd3c-6ae6-422f-8605-e00e853d5b3e",
+            "version": [ 1, 0, 0 ],
+            "entry": "scripts/main.js"
+        }
+    ],
+	"dependencies": [
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.5.0"
+		}
+	]
+}
