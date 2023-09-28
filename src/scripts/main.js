@@ -11,6 +11,7 @@ import * as VectorMath from './lib/vectorMath';
  * @typedef {Object} ProtectedPlayer
  * @prop {Mc.Player} player The player object.
  * @prop {Object} original Original data when the player has (re)spawned.
+ * @prop {Object} initialSpawn `true` if the spawn is after joining a world.
  * @prop {number} original.tick Tick when the player has spawned.
  * @prop {Mc.Vector3} original.location Location where the player has spawned.
  * @prop {Mc.Vector3} original.viewDirection Direction the player was looking when spawned.
@@ -24,15 +25,17 @@ const protectedPlayers = {};
 //# Spawn Protection Worker
 Mc.system.runInterval(() => {
     for (const playerId in protectedPlayers) {
-        const { original, player } = protectedPlayers[playerId];
+        const { original, player, initialSpawn } = protectedPlayers[playerId];
+        const invincibilityTimer = initialSpawn ? 80 : 60
 
         if (
-            (Mc.system.currentTick - original.tick) > 60 &&
+            (Mc.system.currentTick - original.tick) > invincibilityTimer &&
             (
                 !VectorMath.compare(player.location,original.location) ||
                 !VectorMath.compare(player.getViewDirection(),original.viewDirection) ||
                 player.isSneaking ||
-                player.isEmoting
+                player.isEmoting ||
+                player.isJumping
             )
         ) {
             delete protectedPlayers[playerId];
@@ -53,7 +56,8 @@ Mc.world.afterEvents.playerSpawn.subscribe((event) => {
                 tick: Mc.system.currentTick,
                 location: player.location,
                 viewDirection: player.getViewDirection()
-            }
+            },
+            initialSpawn: event.initialSpawn
         }
     },4);
 
